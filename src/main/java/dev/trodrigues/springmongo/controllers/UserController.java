@@ -1,5 +1,6 @@
 package dev.trodrigues.springmongo.controllers;
 
+import dev.trodrigues.springmongo.models.dtos.PostDto;
 import dev.trodrigues.springmongo.models.dtos.UserDto;
 import dev.trodrigues.springmongo.models.dtos.UserInputDto;
 import dev.trodrigues.springmongo.services.UserService;
@@ -33,6 +34,13 @@ public class UserController {
         var user = this.userService.findById(userId);
 
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/{userId}/posts")
+    public ResponseEntity<List<PostDto>> getPostsByUserId(@PathVariable String userId) {
+        var posts = this.userService.findPostsByUser(userId);
+
+        return ResponseEntity.ok(posts);
     }
 
     @PostMapping

@@ -1,5 +1,6 @@
 package dev.trodrigues.springmongo.services.impl;
 
+import dev.trodrigues.springmongo.models.dtos.PostDto;
 import dev.trodrigues.springmongo.models.dtos.UserDto;
 import dev.trodrigues.springmongo.models.dtos.UserInputDto;
 import dev.trodrigues.springmongo.models.entities.User;
@@ -63,6 +64,13 @@ public class UserServiceImpl implements UserService {
         var user = getUserById(userId);
 
         this.userRepository.delete(user);
+    }
+
+    @Override
+    public List<PostDto> findPostsByUser(String userId) {
+        var user = getUserById(userId);
+
+        return user.getPosts().stream().map(PostDto::new).toList();
     }
 
     private User getUserById(String userId) {
