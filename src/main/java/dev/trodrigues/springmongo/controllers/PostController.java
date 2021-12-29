@@ -3,10 +3,9 @@ package dev.trodrigues.springmongo.controllers;
 import dev.trodrigues.springmongo.models.dtos.PostDto;
 import dev.trodrigues.springmongo.services.PostService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/posts")
@@ -23,6 +22,13 @@ public class PostController {
         var post = this.postService.findById(postId);
 
         return ResponseEntity.ok(post);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PostDto>> getPostsByTitle(@RequestParam(defaultValue = "") String text) {
+        var posts = this.postService.findPostsByTitle(text);
+
+        return ResponseEntity.ok(posts);
     }
 
 }

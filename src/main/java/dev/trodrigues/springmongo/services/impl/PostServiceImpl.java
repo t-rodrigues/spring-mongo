@@ -7,6 +7,8 @@ import dev.trodrigues.springmongo.services.PostService;
 import dev.trodrigues.springmongo.services.exceptions.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PostServiceImpl implements PostService {
 
@@ -21,6 +23,11 @@ public class PostServiceImpl implements PostService {
         var post = getEntityById(postId);
 
         return new PostDto(post);
+    }
+
+    @Override
+    public List<PostDto> findPostsByTitle(String text) {
+        return this.postRepository.findByTitleContainingIgnoreCase(text).stream().map(PostDto::new).toList();
     }
 
     private Post getEntityById(String postId) {
