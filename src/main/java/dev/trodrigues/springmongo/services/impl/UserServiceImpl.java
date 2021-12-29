@@ -58,6 +58,13 @@ public class UserServiceImpl implements UserService {
         return new UserDto(user);
     }
 
+    @Override
+    public void delete(String userId) {
+        var user = getUserById(userId);
+
+        this.userRepository.delete(user);
+    }
+
     private User getUserById(String userId) {
         return this.userRepository.findById(userId)
                 .orElseThrow(() -> new ObjectNotFoundException("User not found"));

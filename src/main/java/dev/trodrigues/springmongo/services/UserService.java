@@ -15,4 +15,6 @@ public interface UserService {
 
     UserDto update(String userId, UserInputDto userInputDto);
 
+    void delete(String userId);
+
 }
