@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  mongo:
+    container_name: mongodb
+    image: mongo:4
+    restart: always
+    volumes:
+      - data:/data/db
+    ports:
+      - 27017:27017
+volumes:
+  data: {}
