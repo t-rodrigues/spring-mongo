@@ -1,8 +1,10 @@
 package dev.trodrigues.springmongo.services.impl;
 
 import dev.trodrigues.springmongo.models.dtos.UserDto;
+import dev.trodrigues.springmongo.models.dtos.UserInsertDto;
 import dev.trodrigues.springmongo.repositories.UserRepository;
 import dev.trodrigues.springmongo.services.UserService;
+import dev.trodrigues.springmongo.services.exceptions.BusinessException;
 import dev.trodrigues.springmongo.services.exceptions.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,24 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ObjectNotFoundException("User not found"));
 
         return new UserDto(user);
+    }
+
+    @Override
+    public UserDto create(UserInsertDto userInsertDto) {
+        checkIfEmailExists(userInsertDto.getEmail());
+        var user = userInsertDto.toUserEntity();
+
+        this.userRepository.insert(user);
+
+        return new UserDto(user);
+    }
+
+    private void checkIfEmailExists(String email) {
+        var emailExists = this.userRepository.findByEmail(email);
+
+        if (emailExists.isPresent()) {
+            throw new BusinessException("Email already exists");
+        }
     }
 
 }
