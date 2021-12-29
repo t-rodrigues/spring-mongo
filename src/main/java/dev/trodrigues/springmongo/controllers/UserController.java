@@ -1,7 +1,7 @@
 package dev.trodrigues.springmongo.controllers;
 
 import dev.trodrigues.springmongo.models.dtos.UserDto;
-import dev.trodrigues.springmongo.models.dtos.UserInsertDto;
+import dev.trodrigues.springmongo.models.dtos.UserInputDto;
 import dev.trodrigues.springmongo.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +32,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserInsertDto userInsertDto) {
-        var user = this.userService.create(userInsertDto);
+    public ResponseEntity<UserDto> createUser(@RequestBody UserInputDto userInputDto) {
+        var user = this.userService.create(userInputDto);
         var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userId}").buildAndExpand(user.getId())
                 .toUri();
 

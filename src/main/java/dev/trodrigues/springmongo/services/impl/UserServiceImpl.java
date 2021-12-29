@@ -1,7 +1,7 @@
 package dev.trodrigues.springmongo.services.impl;
 
 import dev.trodrigues.springmongo.models.dtos.UserDto;
-import dev.trodrigues.springmongo.models.dtos.UserInsertDto;
+import dev.trodrigues.springmongo.models.dtos.UserInputDto;
 import dev.trodrigues.springmongo.repositories.UserRepository;
 import dev.trodrigues.springmongo.services.UserService;
 import dev.trodrigues.springmongo.services.exceptions.BusinessException;
@@ -35,9 +35,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto create(UserInsertDto userInsertDto) {
-        checkIfEmailExists(userInsertDto.getEmail());
-        var user = userInsertDto.toUserEntity();
+    public UserDto create(UserInputDto userInputDto) {
+        checkIfEmailExists(userInputDto.getEmail());
+        var user = userInputDto.toUserEntity();
 
         this.userRepository.insert(user);
 
