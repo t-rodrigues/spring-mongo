@@ -27,7 +27,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostDto> findPostsByTitle(String text) {
-        return this.postRepository.findByTitleContainingIgnoreCase(text).stream().map(PostDto::new).toList();
+        return this.postRepository.searchByTitle(text).stream().map(PostDto::new).toList();
     }
 
     private Post getEntityById(String postId) {
