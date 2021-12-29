@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -32,12 +34,20 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserInputDto userInputDto) {
+    public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserInputDto userInputDto) {
         var user = this.userService.create(userInputDto);
         var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userId}").buildAndExpand(user.getId())
                 .toUri();
 
         return ResponseEntity.created(location).body(user);
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<UserDto> updateUser(@PathVariable String userId,
+            @RequestBody @Valid UserInputDto userInputDto) {
+        var user = this.userService.update(userId, userInputDto);
+
+        return ResponseEntity.ok(user);
     }
 
 }

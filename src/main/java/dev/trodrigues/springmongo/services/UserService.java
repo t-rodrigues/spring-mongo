@@ -13,4 +13,6 @@ public interface UserService {
 
     UserDto create(UserInputDto userInputDto);
 
+    UserDto update(String userId, UserInputDto userInputDto);
+
 }

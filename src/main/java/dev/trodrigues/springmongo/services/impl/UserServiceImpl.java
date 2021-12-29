@@ -2,10 +2,12 @@ package dev.trodrigues.springmongo.services.impl;
 
 import dev.trodrigues.springmongo.models.dtos.UserDto;
 import dev.trodrigues.springmongo.models.dtos.UserInputDto;
+import dev.trodrigues.springmongo.models.entities.User;
 import dev.trodrigues.springmongo.repositories.UserRepository;
 import dev.trodrigues.springmongo.services.UserService;
 import dev.trodrigues.springmongo.services.exceptions.BusinessException;
 import dev.trodrigues.springmongo.services.exceptions.ObjectNotFoundException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,8 +30,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto findById(String userId) {
-        var user = this.userRepository.findById(userId)
-                .orElseThrow(() -> new ObjectNotFoundException("User not found"));
+        var user = getUserById(userId);
 
         return new UserDto(user);
     }
@@ -38,10 +39,28 @@ public class UserServiceImpl implements UserService {
     public UserDto create(UserInputDto userInputDto) {
         checkIfEmailExists(userInputDto.getEmail());
         var user = userInputDto.toUserEntity();
-
         this.userRepository.insert(user);
 
         return new UserDto(user);
+    }
+
+    @Override
+    public UserDto update(String userId, UserInputDto userInputDto) {
+        var user = getUserById(userId);
+
+        if (!user.getEmail().equals(userInputDto.getEmail())) {
+            checkIfEmailExists(userInputDto.getEmail());
+        }
+
+        BeanUtils.copyProperties(userInputDto, user);
+        user = this.userRepository.save(user);
+
+        return new UserDto(user);
+    }
+
+    private User getUserById(String userId) {
+        return this.userRepository.findById(userId)
+                .orElseThrow(() -> new ObjectNotFoundException("User not found"));
     }
 
     private void checkIfEmailExists(String email) {
