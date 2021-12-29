@@ -8,4 +8,6 @@ public interface UserService {
 
     List<UserDto> findAll();
 
+    UserDto findById(String userId);
+
 }
