@@ -10,4 +10,6 @@ public interface PostService {
 
     List<PostDto> findPostsByTitle(String text);
 
+    List<PostDto> fullSearch(String text, String start, String end);
+
 }
