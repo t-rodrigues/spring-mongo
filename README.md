@@ -1,5 +1,5 @@
 
-# API - Livraria
+# API - Posts
 
 Projeto desenvolvido para estudaro Spring com Mongo.
 
